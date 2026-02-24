@@ -1,5 +1,5 @@
 # issLab2026
- Laboratorio di <b>Ingegneria dei Sistemi Software</b> a.a. 2025/2026 di Cognome Paolo Audia
+ Laboratorio di <b>Ingegneria dei Sistemi Software</b> a.a. 2025/2026 di Paolo Audia
 
  [Testo di riferimento:](https://anatali.github.io/issLab2026/_static/docs/Protobook.pdf)
  <!-- comment: [ancora personalizzata] -->
