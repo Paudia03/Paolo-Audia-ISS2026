@@ -14,7 +14,7 @@
    con un dispositivo di output realizzato in Swing. <i>Distribuzione</i>: file jar
  ### Sistemi come servizi
  ## Diario di Bordo (Chronicle)
-INDEX👉 [**Apri il Chronicle (Indice delle versioni)**](conway26Java/userDocs/index.html)
+INDEX👉 [Apri il Chronicle](https://htmlpreview.github.io/?https://github.com/Paudia03/Paolo-Audia-ISS2026/blob/main/conway26Java/userDocs/index.html)
  ### Sistema ConwayLife con pagine HTML
  * [ConwayLife Sprint3(ConwayLife/Sprint3/conway26Java): evoluzione del sistema in locale
    usando una pagina HTML come dispositivo di I/O. <i>Distribuzione</i>: Docker yaml.
