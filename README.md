@@ -14,8 +14,7 @@
    con un dispositivo di output realizzato in Swing. <i>Distribuzione</i>: file jar
  ### Sistemi come servizi
  ## Diario di Bordo (Chronicle)
-Tutta l'analisi, la progettazione e l'evoluzione degli Sprint del progetto ConwayLife sono documentati qui:
-👉 [**Apri il Chronicle (Indice delle versioni)**](userDocs/index.html)
+INDEX👉 [**Apri il Chronicle (Indice delle versioni)**](userDocs/index.html)
  * ...
  ### Sistema ConwayLife con pagine HTML
  * [ConwayLife Sprint3(ConwayLife/Sprint3/conway26Java): evoluzione del sistema in locale
