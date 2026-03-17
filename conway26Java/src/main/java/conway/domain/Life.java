@@ -1,66 +1,69 @@
 package conway.domain;
 
 public class Life implements LifeInterface {
-    private int rows;
-    private int cols;
-    private boolean[][] grid;
+    private Grid grid;
 
     public Life(int rows, int cols) {
-        this.rows = rows;
-        this.cols = cols;
-        this.grid = new boolean[rows][cols];
+        this.grid = new Grid(rows, cols); 
     }
 
     @Override
     public int getRows() {
-        return rows;
+        return grid.getRows();
     }
 
     @Override
     public int getCols() {
-        return cols;
+        return grid.getCols();
     }
 
     @Override
     public void setCell(int x, int y, boolean alive) {
-        if(x >= 0 && x < rows && y >= 0 && y < cols) {
-            grid[x][y] = alive;
+        if(x >= 0 && x < getRows() && y >= 0 && y < getCols()) {
+            grid.getCell(x, y).setState(alive); 
         }
     }
 
     @Override
     public boolean isAlive(int x, int y) {
-        if(x >= 0 && x < rows && y >= 0 && y < cols) {
-            return grid[x][y];
+        if(x >= 0 && x < getRows() && y >= 0 && y < getCols()) {
+            return grid.getCell(x, y).isAlive();
         }
         return false;
     }
 
     @Override
     public void nextGeneration() {
-        boolean[][] nextGrid = new boolean[rows][cols];
+        int rows = getRows();
+        int cols = getCols();
+        boolean[][] nextStates = new boolean[rows][cols];
         
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 int aliveNeighbors = countNeighborsAlive(i, j);
+                boolean currentState = grid.getCell(i, j).isAlive();
                 
-                if (grid[i][j]) {
-                    // Cella viva: sopravvive se ha 2 o 3 vicini
-                    nextGrid[i][j] = (aliveNeighbors == 2 || aliveNeighbors == 3);
+                if (currentState) {
+                    nextStates[i][j] = (aliveNeighbors == 2 || aliveNeighbors == 3);
                 } else {
-                    // Cella morta: nasce se ha esattamente 3 vicini
-                    nextGrid[i][j] = (aliveNeighbors == 3);
+                    nextStates[i][j] = (aliveNeighbors == 3);
                 }
             }
         }
-        grid = nextGrid;
+        
+        // Applica i nuovi stati alle Celle vere
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                grid.getCell(i, j).setState(nextStates[i][j]);
+            }
+        }
     }
 
     @Override
     public void clear() {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                grid[i][j] = false;
+        for (int i = 0; i < getRows(); i++) {
+            for (int j = 0; j < getCols(); j++) {
+                grid.getCell(i, j).setState(false);
             }
         }
     }
@@ -68,16 +71,15 @@ public class Life implements LifeInterface {
     @Override
     public String gridRep() {
         StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                sb.append(grid[i][j] ? "1" : "0");
+        for (int i = 0; i < getRows(); i++) {
+            for (int j = 0; j < getCols(); j++) {
+                sb.append(grid.getCell(i, j).isAlive() ? "1" : "0");
             }
             sb.append("\n");
         }
         return sb.toString();
     }
     
-    // Metodo di supporto per contare i vicini
     private int countNeighborsAlive(int row, int col) {
         int count = 0;
         for (int i = -1; i <= 1; i++) {
@@ -85,7 +87,7 @@ public class Life implements LifeInterface {
                 if (i == 0 && j == 0) continue; 
                 int r = row + i;
                 int c = col + j;
-                if (r >= 0 && r < rows && c >= 0 && c < cols && grid[r][c]) {
+                if (r >= 0 && r < getRows() && c >= 0 && c < getCols() && grid.getCell(r, c).isAlive()) {
                     count++;
                 }
             }
