@@ -1,0 +1,50 @@
+plugins {
+    id 'java'
+    id 'eclipse'
+    id 'application'
+    id 'jacoco'
+    
+}
+
+group = 'conway'
+version = '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    flatDir {
+        dirs '../unibolibs'
+    }
+}
+
+dependencies {
+    // Dipendenza per i test limitata SOLO alla fase di test (non finirà in produzione)
+    implementation 'junit:junit:4.13.2'
+}
+
+jacocoTestReport {
+    dependsOn test 
+    reports {
+        xml.required = false
+        csv.required = false
+        html.required = true
+    }
+}
+
+application {
+    mainClass = 'main.java.conway.domain.MainConwayLifeJava'
+}
+
+
+test {
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+jar {
+    manifest {
+        attributes(
+            'Main-Class': 'main.java.conway.domain.MainConwayLifeJava'
+        )
+    }
+}

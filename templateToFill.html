@@ -251,7 +251,25 @@ Copy here the EXACT text given by the customer.
  
 
 <h2>Requirement analysis</h2>
- 
+ R1 introduce tre entità fondamentali:
+  - Cella (Cell): unità atomica del sistema, con stato booleano viva/morta.
+  - Griglia (Grid): contenitore bidimensionale di celle, con dimensioni rows x cols.
+  - Motore di evoluzione (Life): applica le regole di Conway per calcolare la generazione successiva.
+
+Regole di Conway (da R1):
+  1. Una cella viva con 2 o 3 vicini vivi sopravvive.
+  2. Una cella morta con esattamente 3 vicini vivi diventa viva.
+  3. In tutti gli altri casi la cella muore o resta morta.
+
+I vicini considerati sono gli 8 adiacenti (Moore neighborhood).
+Il calcolo è sincrono: lo stato di tutte le celle viene aggiornato
+contemporaneamente sulla base della generazione corrente.
+
+R2 introduce un attore umano con quattro operazioni:
+  - configurare la griglia iniziale (set stato celle)
+  - osservare l'evoluzione (view)
+  - controllare il flusso (start/stop)
+  - resettare la griglia (clear)
 
  
 
