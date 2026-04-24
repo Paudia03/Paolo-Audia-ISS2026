@@ -1,0 +1,30 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation files('libs/conway26Java-1.0-SNAPSHOT.jar')
+    implementation 'io.javalin:javalin:6.3.0'
+    implementation 'org.slf4j:slf4j-simple:2.0.9'
+}
+
+application {
+    mainClass = 'conway.html.MainHtml'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'conway.html.MainHtml'
+    }
+
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}

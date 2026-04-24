@@ -1,0 +1,27 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation files('libs/conway26Java-1.0-SNAPSHOT.jar')
+}
+
+application {
+    mainClass = 'conway.swing.MainSwing'
+}
+jar {
+    manifest {
+        attributes 'Main-Class': 'conway.swing.MainSwing'
+    }
+    
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
