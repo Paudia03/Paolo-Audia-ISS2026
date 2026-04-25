@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Chronicle – ISS 2025/2026 – Paolo Audia</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;700&family=Syne:wght@400;700;800&display=swap');
+
+  :root {
+    --bg: #0d0f14;
+    --surface: #13161e;
+    --border: #1e2330;
+    --accent: #00e5a0;
+    --accent2: #7c6af7;
+    --text: #c8d0e0;
+    --muted: #4a5268;
+    --week-dot: #1e2330;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 14px;
+    line-height: 1.7;
+    min-height: 100vh;
+  }
+
+  header {
+    border-bottom: 1px solid var(--border);
+    padding: 48px 64px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  header::before {
+    content: '';
+    position: absolute;
+    top: -80px; right: -80px;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(0,229,160,0.06) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .label {
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(28px, 4vw, 48px);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 13px;
+  }
+
+  .subtitle a {
+    color: var(--accent2);
+    text-decoration: none;
+  }
+
+  main {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 64px 64px 120px;
+  }
+
+  .timeline {
+    position: relative;
+    padding-left: 32px;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px; top: 8px; bottom: 0;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--accent), var(--accent2), transparent);
+    opacity: 0.3;
+  }
+
+  .week {
+    position: relative;
+    margin-bottom: 56px;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .week:nth-child(1) { animation-delay: 0.05s; }
+  .week:nth-child(2) { animation-delay: 0.1s; }
+  .week:nth-child(3) { animation-delay: 0.15s; }
+  .week:nth-child(4) { animation-delay: 0.2s; }
+  .week:nth-child(5) { animation-delay: 0.25s; }
+  .week:nth-child(6) { animation-delay: 0.3s; }
+  .week:nth-child(7) { animation-delay: 0.35s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .week-dot {
+    position: absolute;
+    left: -28px; top: 6px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--accent);
+    box-shadow: 0 0 8px rgba(0,229,160,0.3);
+  }
+
+  .week-dot.muted {
+    border-color: var(--muted);
+    box-shadow: none;
+  }
+
+  .week-header {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .week-num {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    color: #fff;
+  }
+
+  .week-date {
+    font-size: 11px;
+    color: var(--muted);
+    letter-spacing: 1px;
+  }
+
+  .tag {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 2px 8px;
+    border-radius: 3px;
+    margin-left: 8px;
+  }
+
+  .tag-sprint  { background: rgba(0,229,160,0.1);  color: var(--accent); }
+  .tag-service { background: rgba(124,106,247,0.1); color: var(--accent2); }
+  .tag-actor   { background: rgba(255,180,0,0.1);   color: #ffb400; }
+  .tag-update  { background: rgba(100,120,160,0.1); color: #6478a0; }
+
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+  }
+
+  .card p {
+    color: var(--text);
+    margin-bottom: 12px;
+  }
+
+  .card p:last-child { margin-bottom: 0; }
+
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+
+  ul li {
+    padding: 5px 0;
+    padding-left: 16px;
+    position: relative;
+    color: var(--text);
+  }
+
+  ul li::before {
+    content: '▸';
+    position: absolute;
+    left: 0;
+    color: var(--accent);
+    font-size: 11px;
+    top: 7px;
+  }
+
+  code {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    border-radius: 3px;
+    padding: 1px 6px;
+    font-size: 12px;
+    color: var(--accent);
+  }
+
+  .note {
+    margin-top: 12px;
+    padding: 10px 14px;
+    border-left: 2px solid var(--accent2);
+    background: rgba(124,106,247,0.05);
+    border-radius: 0 4px 4px 0;
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  footer {
+    text-align: center;
+    padding: 32px;
+    border-top: 1px solid var(--border);
+    color: var(--muted);
+    font-size: 12px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="label">ISS 2025/2026 — Diario di Bordo</div>
+  <h1>Chronicle<br>Paolo Audia</h1>
+  <p class="subtitle">
+    Laboratorio di Ingegneria dei Sistemi Software &nbsp;·&nbsp;
+    <a href="https://anatali.github.io/issLab2026/_static/docs/Protobook.pdf">Protobook ↗</a>
+  </p>
+</header>
+
+<main>
+<div class="timeline">
+
+  <!-- WEEK 1 -->
+  <div class="week">
+    <div class="week-dot muted"></div>
+    <div class="week-header">
+      <span class="week-num">Week 1</span>
+      <span class="week-date">24 FEB 2025</span>
+      <span class="tag tag-sprint">Sprint 1</span>
+    </div>
+    <div class="card">
+      <p>Avvio del corso e impostazione del progetto <strong>ConwayLife Sprint1</strong>.</p>
+      <ul>
+        <li>Definizione dei requisiti R1 (core logico) e R2 (interfaccia utente)</li>
+        <li>Modellazione delle entità di dominio: <code>ICell</code>, <code>IGrid</code>, <code>LifeInterface</code></li>
+        <li>Implementazione delle regole di Conway con calcolo sincrono tramite array temporaneo</li>
+        <li>Applicazione dei principi SOLID e pattern Factory (<code>ConwayFactory</code>)</li>
+        <li>Test con JUnit: pattern Block (stabile) e Blinker (oscillatore)</li>
+        <li>Distribuzione come <code>conway26Java-1.0-SNAPSHOT.jar</code></li>
+      </ul>
+      <div class="note">Aggiornato il 24/04/2025 — progetto revisionato e allineato al programma del corso.</div>
+    </div>
+  </div>
+
+  <!-- WEEK 2 -->
+  <div class="week">
+    <div class="week-dot muted"></div>
+    <div class="week-header">
+      <span class="week-num">Week 2</span>
+      <span class="week-date">03 MAR 2025</span>
+      <span class="tag tag-sprint">Sprint 2</span>
+    </div>
+    <div class="card">
+      <p>Evoluzione verso <strong>ConwayLife Sprint2</strong>: GUI Swing come dispositivo di I/O.</p>
+      <ul>
+        <li>Creazione progetto separato <code>conway26JavaSwing</code> che importa il jar di Sprint1</li>
+        <li>Implementazione di <code>OutdevSwing</code> che implementa <code>IOutDev</code></li>
+        <li>Separazione netta Model / View: il jar di Sprint1 usato come libreria senza modifiche</li>
+        <li>Loop di gioco su thread separato per non bloccare l'EDT di Swing</li>
+        <li>Distribuzione come jar eseguibile</li>
+      </ul>
+      <div class="note">Aggiornato il 24/04/2025 — progetto revisionato e allineato al programma del corso.</div>
+    </div>
+  </div>
+
+  <!-- WEEK 3-4 -->
+  <div class="week">
+    <div class="week-dot muted"></div>
+    <div class="week-header">
+      <span class="week-num">Week 3–4</span>
+      <span class="week-date">10 MAR 2025</span>
+      <span class="tag tag-sprint">Sprint 3</span>
+    </div>
+    <div class="card">
+      <p>Evoluzione verso <strong>ConwayLife Sprint3</strong>: GUI HTML con Javalin e deployment in Docker.</p>
+      <ul>
+        <li>Creazione progetto <code>conway26GuiHtml</code> che importa il jar di Sprint1</li>
+        <li>Implementazione di <code>OutdevHtml</code>: Javalin espone <code>GET /grid</code> con pagina HTML e auto-refresh</li>
+        <li>Separazione Model / View mantenuta: <code>printGrid(IGrid)</code> riceve solo l'interfaccia</li>
+        <li>Dockerfile con <code>eclipse-temurin:17-jre</code>, porta 7000 esposta</li>
+        <li>Build con <code>gradle jar</code> e deployment con <code>docker build</code> + <code>docker run</code></li>
+      </ul>
+      <div class="note">Aggiornato il 24/04/2025 — progetto revisionato e allineato al programma del corso.</div>
+    </div>
+  </div>
+
+  <!-- WEEK 5 -->
+  <div class="week">
+    <div class="week-dot muted"></div>
+    <div class="week-header">
+      <span class="week-num">Week 5</span>
+      <span class="week-date">18 MAR 2025</span>
+      <span class="tag tag-service">Servizi</span>
+    </div>
+    <div class="card">
+      <p>Primo servizio di rete: <strong>SistemaSJavalin</strong>.</p>
+      <ul>
+        <li>Servizio WebSocket su <code>/eval</code> porta 8080 con Javalin 5</li>
+        <li>Calcolo di <code>sin(x) + cos(√3·x)</code> ricevuto via WS e risposto al client</li>
+        <li>Client HTML servito direttamente da Javalin per evitare blocchi CORS</li>
+        <li>Uso di <code>unibo.basicomm23</code> per logging colorato</li>
+        <li>Deployment in Docker con <code>eclipse-temurin:17-jre</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- WEEK 6-7 -->
+  <div class="week">
+    <div class="week-dot muted"></div>
+    <div class="week-header">
+      <span class="week-num">Week 6–7</span>
+      <span class="week-date">25 MAR 2025</span>
+      <span class="tag tag-actor">Protoattori</span>
+    </div>
+    <div class="card">
+      <p>Introduzione al modello a protoattori: <strong>SistemaSProtoactor</strong>.</p>
+      <ul>
+        <li>Refactoring di SistemaSJavalin usando la libreria <code>protoactor26-1.0.jar</code></li>
+        <li><code>SistemaSAsProtoactor</code> estende <code>AbstractProtoactor26</code></li>
+        <li>Javalin agisce da inbound adapter dentro <code>ProtoActorContext26</code></li>
+        <li>Messaggi nel formato <code>msg(id,type,sender,receiver,content,num)</code> parsati con tuprolog</li>
+        <li>Calcolo eseguito nel metodo <code>elabRequest</code> del pattore con coda FIFO dedicata</li>
+        <li>Client HTML servito su <code>GET /</code> dalla stessa porta 8080</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- WEEK 8 -->
+  <div class="week">
+    <div class="week-dot"></div>
+    <div class="week-header">
+      <span class="week-num">Week 8</span>
+      <span class="week-date">24–25 APR 2025</span>
+      <span class="tag tag-actor">Protoattori</span>
+    </div>
+    <div class="card">
+      <p>Evoluzione di ConwayLife verso architettura a protoattori: <strong>Conway26Protoactors</strong>.</p>
+      <ul>
+        <li>Architettura <code>protoactorlifectrl1</code>: <code>LifeController1Pattore</code> + <code>OutGuiDev</code> puro output</li>
+        <li><code>LifeController1Pattore</code> è proattivo (loop generazioni ogni 500ms) e reattivo (comandi START/STOP/CLEAR via WS)</li>
+        <li>Pagina HTML servita direttamente da Javalin su porta 8070</li>
+        <li>Push della griglia al browser via <code>emitInfo</code> ad ogni generazione calcolata</li>
+        <li>Griglia 20×20 con blinker iniziale, aggiornamento in tempo reale senza refresh</li>
+        <li>Comandi dal browser in formato <code>IApplMessage</code> instradati dal contesto al pattore</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</main>
+
+<footer>
+  Paolo Audia &nbsp;·&nbsp; ISS 2025/2026 &nbsp;·&nbsp; Università di Bologna
+</footer>
+
+</body>
+</html>
