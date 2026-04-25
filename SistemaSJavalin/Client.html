@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SistemaSJavalin - Client</title>
+    <style>
+        body { font-family: monospace; padding: 20px; }
+        input { font-size: 18px; padding: 6px; width: 200px; }
+        button { font-size: 18px; padding: 6px 12px; }
+        #log { margin-top: 20px; border: 1px solid #ccc; padding: 10px; min-height: 100px; }
+        .sent { color: blue; }
+        .received { color: green; }
+        .system { color: gray; }
+        .error { color: red; }
+    </style>
+</head>
+<body>
+    <h2>Client WebSocket - /eval</h2>
+
+    <input type="number" id="input" placeholder="Inserisci x" step="any">
+    <button onclick="sendValue()">Invia</button>
+    <button onclick="disconnect()">Disconnetti</button>
+
+    <div id="log"></div>
+
+    <script>
+        const log = document.getElementById('log');
+        const ws = new WebSocket('ws://localhost:8080/eval');
+
+        function addLine(text, cls) {
+            const p = document.createElement('p');
+            p.className = cls;
+            p.textContent = text;
+            log.appendChild(p);
+        }
+
+        ws.onopen = () => addLine('Connesso al server', 'system');
+        ws.onmessage = e => addLine('← ' + e.data, 'received');
+        ws.onerror = () => addLine('Errore di connessione', 'error');
+        ws.onclose = () => addLine('Connessione chiusa', 'system');
+
+        function sendValue() {
+            const val = document.getElementById('input').value;
+            if (val === '') return;
+            ws.send(val);
+            addLine('→ ' + val, 'sent');
+        }
+
+        function disconnect() {
+            ws.close();
+        }
+    </script>
+</body>
+</html>

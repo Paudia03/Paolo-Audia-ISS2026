@@ -1,0 +1,28 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation files('libs/unibo.basicomm23-1.0.jar')
+    implementation 'io.javalin:javalin:5.6.3'
+    implementation 'org.slf4j:slf4j-simple:2.0.9'
+}
+
+application {
+    mainClass = 'main.java.javalin.SistemaSJavalin'
+}
+
+jar {
+    manifest {
+        attributes 'Main-Class': 'main.java.javalin.SistemaSJavalin'
+    }
+    from {
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
