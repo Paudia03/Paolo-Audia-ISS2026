@@ -6,9 +6,6 @@ Laboratorio di <b>Ingegneria dei Sistemi Software</b> a.a. 2025/2026 di Paolo Au
 ## Diario di Bordo (Chronicle)
 <<<<<<< HEAD
 INDEX👉 [Apri il Chronicle](https://htmlpreview.github.io/?https://github.com/Paudia03/Paolo-Audia-ISS2026/blob/main/Index.html)
-=======
-INDEX👉 [Apri il Chronicle](https://htmlpreview.github.io/?https://github.com/Paudia03/Paolo-Audia-ISS2026/blob/main/conway26Java/userDocs/index.html)(https://github.com/Paudia03/Paolo-Audia-ISS2026/blob/main/Index.html)
->>>>>>> 3e342ef7c47f4f8c31c74759335b6070947d67ff
 
 <h2 id="ParteA">Parte A: Dai programmi ai Sistemi a Microservizi</h2>
 
