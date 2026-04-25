@@ -4,7 +4,7 @@ Laboratorio di <b>Ingegneria dei Sistemi Software</b> a.a. 2025/2026 di Paolo Au
 [Testo di riferimento](https://anatali.github.io/issLab2026/_static/docs/Protobook.pdf)
 
 ## Diario di Bordo (Chronicle)
-INDEX👉 [Apri il Chronicle](https://htmlpreview.github.io/?https://github.com/Paudia03/Paolo-Audia-ISS2026/blob/main/conway26Java/userDocs/index.html)
+INDEX👉 [Apri il Chronicle][(https://htmlpreview.github.io/?https://github.com/Paudia03/Paolo-Audia-ISS2026/blob/main/conway26Java/userDocs/index.html)](https://github.com/Paudia03/Paolo-Audia-ISS2026/blob/main/Index.html)
 
 <h2 id="ParteA">Parte A: Dai programmi ai Sistemi a Microservizi</h2>
 
