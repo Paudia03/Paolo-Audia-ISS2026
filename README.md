@@ -9,7 +9,6 @@ INDEX👉 [Apri il Chronicle](https://htmlpreview.github.io/?https://github.com/
 <h2 id="ParteA">Parte A: Dai programmi ai Sistemi a Microservizi</h2>
 
 ### Sistema ConwayLife in locale
-[Riferimento: conway26Java Dai requisiti al deployment](https://anatali.github.io/issLab2026/Project%20conway26Java.html#conway26java-dai-requisiti-al-deployment)
 
 * [ConwayLife Sprint1](ConwayLife/Sprint1/conway26Java): impostazione di un primo prototipo in Java con dispositivi Mock di I/O. <i>Distribuzione</i>: file jar.
 * [ConwayLife Sprint2](ConwayLife/Sprint2/conway26Java): evoluzione del primo prototipo con un dispositivo di output realizzato in Swing. <i>Distribuzione</i>: file jar.
@@ -20,9 +19,9 @@ INDEX👉 [Apri il Chronicle](https://htmlpreview.github.io/?https://github.com/
 
 ### Sistemi come servizi
 
-* [SistemaSJavalin](SistemaSJavalin): servizio WebSocket in Java che calcola sin(x) + cos(√3·x). <i>Distribuzione</i>: Docker.
+* [SistemaSJavalin](SistemaSJavalin): servizio WebSocket che calcola sin(x) + cos(√3·x). <i>Distribuzione</i>: Docker.
 
 ### Sistemi basati su Protoattori
 
-* [SistemaSProtoactor](SistemaSProtoactor): refactoring di SistemaSJavalin usando il modello a protoattori. Il calcolo è delegato a un pattore con coda FIFO. <i>Distribuzione</i>: locale.
-* [Conway26Protoactors](Conway26Protoactors): evoluzione di ConwayLife con architettura a protoattori. Il LifeController è un pattore proattivo (genera le epoche) e reattivo (riceve comandi START/STOP/CLEAR dal browser via WebSocket). <i>Distribuzione</i>: locale.
+* [SistemaSProtoactor](SistemaSProactor): refactoring di SistemaSJavalin con architettura a protoattori.
+* [Conway26Protoactors](Conway26Proactors): ConwayLife con LifeController come pattore proattivo e reattivo.
