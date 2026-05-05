@@ -1,0 +1,19 @@
+System firefly
+Context ctxfirefly ip [ host="localhost" port=8040 ]
+QActor firefly1 context ctxfirefly {
+State s0 initial {
+	println("hello world") color blue
+}
+Goto flash
+
+State flash{
+[# var Timer = java.util.Random().nextLong(500L,1000L ) #]
+delayVar Timer
+//TurnoOn
+println("$name | turnOn $Timer") color magenta
+delayVar Timer
+//TurnoOff
+println("$name | turnOff $Timer") color cyan
+}
+
+}
