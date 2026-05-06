@@ -25,3 +25,9 @@ INDEX👉 [Apri il Chronicle](https://htmlpreview.github.io/?https://github.com/
 
 * [SistemaSProtoactor](SistemaSProactor): refactoring di SistemaSJavalin con architettura a protoattori.
 * [Conway26Protoactors](Conway26Proactors): ConwayLife con LifeController come pattore proattivo e reattivo.
+
+### Sistemi basati su Attori (QAK)
+
+* [Firefly](firefly): primo modello QAK di una singola lucciola con comportamento autonomo di lampeggio e output su grid HTML.
+* [Fireflysynch](fireflysynch): sistema decentralizzato di 3 lucciole che allineano autonomamente la propria frequenza e fase dopo 10 secondi.
+* [Fireflysonar](fireflysonar): evoluzione di Fireflysynch con l'introduzione di un Sonar (mock e handler) per forzare la sincronizzazione/desincronizzazione in base alla distanza di un ostacolo.
