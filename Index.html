@@ -105,6 +105,11 @@
   .week:nth-child(5) { animation-delay: 0.25s; }
   .week:nth-child(6) { animation-delay: 0.3s; }
   .week:nth-child(7) { animation-delay: 0.35s; }
+  .week:nth-child(8) { animation-delay: 0.4s; }
+  .week:nth-child(9) { animation-delay: 0.45s; }
+  .week:nth-child(10) { animation-delay: 0.5s; }
+  .week:nth-child(11) { animation-delay: 0.55s; }
+  .week:nth-child(12) { animation-delay: 0.6s; }
 
   @keyframes fadeUp {
     from { opacity: 0; transform: translateY(16px); }
@@ -345,7 +350,7 @@
 
   <!-- WEEK 8 -->
   <div class="week">
-    <div class="week-dot"></div>
+    <div class="week-dot muted"></div>
     <div class="week-header">
       <span class="week-num">Week 8</span>
       <span class="week-date">24–25 APR 2025</span>
@@ -360,6 +365,83 @@
         <li>Push della griglia al browser via <code>emitInfo</code> ad ogni generazione calcolata</li>
         <li>Griglia 20×20 con blinker iniziale, aggiornamento in tempo reale senza refresh</li>
         <li>Comandi dal browser in formato <code>IApplMessage</code> instradati dal contesto al pattore</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- WEEK 9 -->
+  <div class="week">
+    <div class="week-dot muted"></div>
+    <div class="week-header">
+      <span class="week-num">Week 9</span>
+      <span class="week-date">14–15 APR 2025</span>
+      <span class="tag tag-actor">QAK & MQTT</span>
+    </div>
+    <div class="card">
+      <p>Introduzione al linguaggio QAK e alle interazioni Publish-Subscribe.</p>
+      <ul>
+        <li>Introduzione alla interazione publish-subscribe e comunicazioni con MQTT[cite: 2]</li>
+        <li>Installazione dei plugins qak in dropins di Eclipse ed esempio di creazione di un workspace[cite: 2]</li>
+        <li>Verso l'uso di QAK in ConwayLife: analisi del ruolo del preambolo nel linguaggio[cite: 2]</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- WEEK 10 -->
+  <div class="week">
+    <div class="week-dot muted"></div>
+    <div class="week-header">
+      <span class="week-num">Week 10</span>
+      <span class="week-date">21–22 APR 2025</span>
+      <span class="tag tag-actor">QAK Modelli</span>
+    </div>
+    <div class="card">
+      <p>Primi passi formali: modelli QAK e il progetto <strong>firefly</strong>.</p>
+      <ul>
+        <li>Analisi della sintassi QAK e del comportamento degli attori come automi a stati finiti (Demo Send-Receive-Emit)[cite: 2]</li>
+        <li>Aggiornamento dei plugins v.1.6.4 e delle librerie `unibo.basicomm23`[cite: 2]</li>
+        <li>Costruzione cooperativa in laboratorio del modello QAK di SistemaS[cite: 2]</li>
+        <li>Progetto <strong>firefly</strong>: primo modello QAK di una singola lucciola con comportamento autonomo di lampeggio[cite: 2]</li>
+        <li>Integrazione del modello <code>firefly</code> con un output grafico su grid HTML.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- WEEK 11 -->
+  <div class="week">
+    <div class="week-dot muted"></div>
+    <div class="week-header">
+      <span class="week-num">Week 11</span>
+      <span class="week-date">28–29 APR 2025</span>
+      <span class="tag tag-actor">QAK & MDE</span>
+    </div>
+    <div class="card">
+      <p>Model Driven Engineering (MDE), Orchestrazione, Coreografia e <strong>fireflysynch</strong>.</p>
+      <ul>
+        <li>Studio della gestione messaggi, attori External e primitiva `create` in QAK[cite: 2]</li>
+        <li>QAK e Model Driven Engineering: differenze architetturali tra orchestrazione e coreografia[cite: 2]</li>
+        <li>Discussione in laboratorio sui requisiti di sincronizzazione (da comportamento autonomo a sincrono)[cite: 2]</li>
+        <li>Progetto <strong>fireflysynch</strong>: sistema decentralizzato di 3 lucciole che allineano autonomamente la propria frequenza e fase dopo 10 secondi.</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- WEEK 12 -->
+  <div class="week">
+    <div class="week-dot"></div>
+    <div class="week-header">
+      <span class="week-num">Week 12</span>
+      <span class="week-date">05–06 MAG 2025</span>
+      <span class="tag tag-actor">Sensori & DDR</span>
+    </div>
+    <div class="card">
+      <p>Integrazione di sistemi reattivi, Sensori e Differential Drive Robot (DDR).</p>
+      <ul>
+        <li>Discussione sui modelli a comportamento orchestrato vs coreografato[cite: 2]</li>
+        <li>Progetto <strong>fireflysynch_sonar</strong>: evoluzione di <code>fireflysynch</code> con l'introduzione di un Sonar (mock e handler).</li>
+        <li>Gestione reattiva dei dati radar/sonar per forzare la sincronizzazione (ostacolo &lt; DMIN) o la desincronizzazione del sistema[cite: 2]</li>
+        <li>Introduzione al <code>VirtualRobot26</code> come definizione formale di un DDR[cite: 2]</li>
+        <li>Presentazione ed esposizione del TemaFinale25 e interazioni con ostacoli per la navigazione del robot[cite: 2]</li>
       </ul>
     </div>
   </div>
