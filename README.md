@@ -28,6 +28,6 @@ INDEX👉 [Apri il Chronicle](https://htmlpreview.github.io/?https://github.com/
 
 ### Sistemi basati su Attori (QAK)
 
-* [firefly](firefly): primo modello QAK di una singola lucciola con comportamento autonomo di lampeggio e output su grid HTML.
+* [firefly](Firefly): primo modello QAK di una singola lucciola con comportamento autonomo di lampeggio e output su grid HTML.
 * [fireflysynch](fireflysynch): sistema decentralizzato di 3 lucciole che allineano autonomamente la propria frequenza e fase dopo 10 secondi.
 * [fireflysynch_sonar](fireflysynch_sonar): evoluzione di fireflysynch con l'introduzione di un Sonar (mock e handler) per forzare la sincronizzazione/desincronizzazione in base alla distanza di un ostacolo.
