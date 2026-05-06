@@ -1,4 +1,4 @@
-System fireflysynch
+System fireflysynch_sonar
 Dispatch cellstate : cellstate(X,Y,COLOR)
 
 Context ctxfirefly ip [ host="localhost" port=8040 ]
