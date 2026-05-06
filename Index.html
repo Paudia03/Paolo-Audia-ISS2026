@@ -15,7 +15,6 @@
     --accent2: #7c6af7;
     --text: #c8d0e0;
     --muted: #4a5268;
-    --week-dot: #1e2330;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -98,15 +97,15 @@
     animation: fadeUp 0.4s ease both;
   }
 
-  .week:nth-child(1) { animation-delay: 0.05s; }
-  .week:nth-child(2) { animation-delay: 0.1s; }
-  .week:nth-child(3) { animation-delay: 0.15s; }
-  .week:nth-child(4) { animation-delay: 0.2s; }
-  .week:nth-child(5) { animation-delay: 0.25s; }
-  .week:nth-child(6) { animation-delay: 0.3s; }
-  .week:nth-child(7) { animation-delay: 0.35s; }
-  .week:nth-child(8) { animation-delay: 0.4s; }
-  .week:nth-child(9) { animation-delay: 0.45s; }
+  .week:nth-child(1)  { animation-delay: 0.05s; }
+  .week:nth-child(2)  { animation-delay: 0.1s; }
+  .week:nth-child(3)  { animation-delay: 0.15s; }
+  .week:nth-child(4)  { animation-delay: 0.2s; }
+  .week:nth-child(5)  { animation-delay: 0.25s; }
+  .week:nth-child(6)  { animation-delay: 0.3s; }
+  .week:nth-child(7)  { animation-delay: 0.35s; }
+  .week:nth-child(8)  { animation-delay: 0.4s; }
+  .week:nth-child(9)  { animation-delay: 0.45s; }
   .week:nth-child(10) { animation-delay: 0.5s; }
   .week:nth-child(11) { animation-delay: 0.55s; }
   .week:nth-child(12) { animation-delay: 0.6s; }
@@ -374,15 +373,18 @@
     <div class="week-dot muted"></div>
     <div class="week-header">
       <span class="week-num">Week 9</span>
-      <span class="week-date">14–15 APR 2025</span>
-      <span class="tag tag-actor">QAK & MQTT</span>
+      <span class="week-date">28 APR 2025</span>
+      <span class="tag tag-actor">Protoattori TCP</span>
     </div>
     <div class="card">
-      <p>Introduzione al linguaggio QAK e alle interazioni Publish-Subscribe.</p>
+      <p>Nuova analisi per ConwayLife e scenario A-S con polling: <strong>LifeGamePactorPolling</strong>.</p>
       <ul>
-        <li>Introduzione alla interazione publish-subscribe e comunicazioni con MQTT[cite: 2]</li>
-        <li>Installazione dei plugins qak in dropins di Eclipse ed esempio di creazione di un workspace[cite: 2]</li>
-        <li>Verso l'uso di QAK in ConwayLife: analisi del ruolo del preambolo nel linguaggio[cite: 2]</li>
+        <li>Studio dell'architettura a tre componenti: <code>lifegame</code> (A), <code>guiserver</code> (S), Browser (B)</li>
+        <li>Analisi delle interazioni A-S: dispatch <code>display</code> da A a S, request <code>readGuiCmd</code> da A a S in polling</li>
+        <li>Uso del progetto del prof <code>conway26GuiAlonePactorTcp</code> come guiserver su porta 8050 via TCP</li>
+        <li>Implementazione di <code>LifeGamePactorPolling</code>: pattore proattivo che fa polling a S ogni 500ms</li>
+        <li>Connessione TCP tra A e S tramite <code>TcpClientSupport</code> della libreria <code>unibo.basicomm23</code></li>
+        <li>Separazione netta tra logica di gioco (A) e servizio di I/O (S)</li>
       </ul>
     </div>
   </div>
@@ -392,17 +394,16 @@
     <div class="week-dot muted"></div>
     <div class="week-header">
       <span class="week-num">Week 10</span>
-      <span class="week-date">21–22 APR 2025</span>
-      <span class="tag tag-actor">QAK Modelli</span>
+      <span class="week-date">05 MAG 2025</span>
+      <span class="tag tag-actor">QAK</span>
     </div>
     <div class="card">
-      <p>Primi passi formali: modelli QAK e il progetto <strong>firefly</strong>.</p>
+      <p>Introduzione al linguaggio <strong>QAK</strong> e al Model Driven Engineering.</p>
       <ul>
-        <li>Analisi della sintassi QAK e del comportamento degli attori come automi a stati finiti (Demo Send-Receive-Emit)[cite: 2]</li>
-        <li>Aggiornamento dei plugins v.1.6.4 e delle librerie `unibo.basicomm23`[cite: 2]</li>
-        <li>Costruzione cooperativa in laboratorio del modello QAK di SistemaS[cite: 2]</li>
-        <li>Progetto <strong>firefly</strong>: primo modello QAK di una singola lucciola con comportamento autonomo di lampeggio[cite: 2]</li>
-        <li>Integrazione del modello <code>firefly</code> con un output grafico su grid HTML.</li>
+        <li>Installazione dei plugin QAK in Eclipse e configurazione del workspace</li>
+        <li>Sintassi QAK: attori come automi a stati finiti, messaggi tipizzati</li>
+        <li>Differenze architetturali tra orchestrazione e coreografia</li>
+        <li>Primo modello QAK applicato a SistemaS</li>
       </ul>
     </div>
   </div>
@@ -412,36 +413,16 @@
     <div class="week-dot muted"></div>
     <div class="week-header">
       <span class="week-num">Week 11</span>
-      <span class="week-date">28–29 APR 2025</span>
-      <span class="tag tag-actor">QAK & MDE</span>
+      <span class="week-date">06 MAG 2025</span>
+      <span class="tag tag-actor">QAK & Firefly</span>
     </div>
     <div class="card">
-      <p>Model Driven Engineering (MDE), Orchestrazione, Coreografia e <strong>fireflysynch</strong>.</p>
+      <p>Primo progetto QAK: <strong>firefly</strong> e sincronizzazione distribuita.</p>
       <ul>
-        <li>Studio della gestione messaggi, attori External e primitiva `create` in QAK[cite: 2]</li>
-        <li>QAK e Model Driven Engineering: differenze architetturali tra orchestrazione e coreografia[cite: 2]</li>
-        <li>Discussione in laboratorio sui requisiti di sincronizzazione (da comportamento autonomo a sincrono)[cite: 2]</li>
-        <li>Progetto <strong>fireflysynch</strong>: sistema decentralizzato di 3 lucciole che allineano autonomamente la propria frequenza e fase dopo 10 secondi.</li>
-      </ul>
-    </div>
-  </div>
-
-  <!-- WEEK 12 -->
-  <div class="week">
-    <div class="week-dot"></div>
-    <div class="week-header">
-      <span class="week-num">Week 12</span>
-      <span class="week-date">05–06 MAG 2025</span>
-      <span class="tag tag-actor">Sensori & DDR</span>
-    </div>
-    <div class="card">
-      <p>Integrazione di sistemi reattivi, Sensori e Differential Drive Robot (DDR).</p>
-      <ul>
-        <li>Discussione sui modelli a comportamento orchestrato vs coreografato[cite: 2]</li>
-        <li>Progetto <strong>fireflysynch_sonar</strong>: evoluzione di <code>fireflysynch</code> con l'introduzione di un Sonar (mock e handler).</li>
-        <li>Gestione reattiva dei dati radar/sonar per forzare la sincronizzazione (ostacolo &lt; DMIN) o la desincronizzazione del sistema[cite: 2]</li>
-        <li>Introduzione al <code>VirtualRobot26</code> come definizione formale di un DDR[cite: 2]</li>
-        <li>Presentazione ed esposizione del TemaFinale25 e interazioni con ostacoli per la navigazione del robot[cite: 2]</li>
+        <li>Progetto <code>firefly</code>: attore con comportamento autonomo di lampeggio</li>
+        <li>Progetto <code>fireflysynch</code>: sistema di lucciole che allineano autonomamente frequenza e fase</li>
+        <li>Gestione messaggi tra attori: <code>dispatch</code>, <code>request</code>, <code>emit</code></li>
+        <li>Output grafico su grid HTML integrato con il modello QAK</li>
       </ul>
     </div>
   </div>

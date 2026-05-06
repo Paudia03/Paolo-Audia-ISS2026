@@ -1,0 +1,146 @@
+System fireflysynch
+Dispatch cellstate : cellstate(X,Y,COLOR)
+
+Context ctxfirefly ip [ host="localhost" port=8040 ]
+Context ctxgrid    ip [ host="127.0.0.1" port=8050 ]
+
+ExternalQActor griddisplay context ctxgrid
+
+// LUCCIOLA 1
+QActor firefly1 context ctxfirefly {
+    [#
+        var StartTime = 0L
+        var BlinkTime = 600L 
+        var SyncTime  = 1000L
+        var IsSynced  = false
+        var AlignTime = 0L
+    #]
+
+    State s0 initial {
+        println("$name | start")
+        [# StartTime = System.currentTimeMillis() #]
+    }
+    Goto flashOn
+
+    State flashOn {
+        [# var Elapsed = System.currentTimeMillis() - StartTime #]
+        
+        // Se passano 10 secondi e non siamo ancora sincronizzati...
+        if [# Elapsed > 10000 && !IsSynced #] {
+            [# 
+               IsSynced = true 
+               // Calcoliamo i millisecondi esatti che mancano al prossimo multiplo di 1000
+               AlignTime = SyncTime - (System.currentTimeMillis() % SyncTime)
+            #]
+            println("$name | Sincronizzazione attivata! Allineamento fase in $AlignTime ms")
+            
+            // Aspettiamo questo intervallo per allinearci col "secondo esatto" globale
+            delayVar AlignTime
+            [# BlinkTime = SyncTime #]
+        }
+
+        println("$name | turnOn (delay=$BlinkTime)")
+        color magenta
+        forward griddisplay -m cellstate: cellstate(12,9,1)
+        delayVar BlinkTime
+    }
+    Goto flashOff
+    
+    State flashOff {
+        println("$name | turnOff")
+        color cyan
+        forward griddisplay -m cellstate: cellstate(12,9,0)
+        delayVar BlinkTime
+    }
+    Goto flashOn
+}
+
+// LUCCIOLA 2
+QActor firefly2 context ctxfirefly {
+    [#
+        var StartTime = 0L
+        var BlinkTime = 800L 
+        var SyncTime  = 1000L
+        var IsSynced  = false
+        var AlignTime = 0L
+    #]
+
+    State s0 initial {
+        println("$name | start")
+        [# StartTime = System.currentTimeMillis() #]
+    }
+    Goto flashOn
+
+    State flashOn {
+        [# var Elapsed = System.currentTimeMillis() - StartTime #]
+        
+        if [# Elapsed > 10000 && !IsSynced #] {
+            [# 
+               IsSynced = true 
+               AlignTime = SyncTime - (System.currentTimeMillis() % SyncTime)
+            #]
+            println("$name | Sincronizzazione attivata! Allineamento fase in $AlignTime ms")
+            delayVar AlignTime
+            [# BlinkTime = SyncTime #]
+        }
+
+        println("$name | turnOn (delay=$BlinkTime)")
+        color magenta
+        forward griddisplay -m cellstate: cellstate(12,11,1)
+        delayVar BlinkTime
+    }
+    Goto flashOff
+    
+    State flashOff {
+        println("$name | turnOff")
+        color cyan
+        forward griddisplay -m cellstate: cellstate(12,11,0)
+        delayVar BlinkTime
+    }
+    Goto flashOn
+}
+
+// LUCCIOLA 3
+QActor firefly3 context ctxfirefly {
+    [#
+        var StartTime = 0L
+        var BlinkTime = 400L 
+        var SyncTime  = 1000L
+        var IsSynced  = false
+        var AlignTime = 0L
+    #]
+
+    State s0 initial {
+        println("$name | start")
+        [# StartTime = System.currentTimeMillis() #]
+    }
+    Goto flashOn
+
+    State flashOn {
+        [# var Elapsed = System.currentTimeMillis() - StartTime #]
+        
+        if [# Elapsed > 10000 && !IsSynced #] {
+            [# 
+               IsSynced = true 
+               AlignTime = SyncTime - (System.currentTimeMillis() % SyncTime)
+            #]
+            println("$name | Sincronizzazione attivata! Allineamento fase in $AlignTime ms")
+            delayVar AlignTime
+            [# BlinkTime = SyncTime #]
+        }
+
+        println("$name | turnOn (delay=$BlinkTime)")
+        color magenta
+        forward griddisplay -m cellstate: cellstate(12,13,1)
+        delayVar BlinkTime
+    }
+    Goto flashOff
+    
+    State flashOff {
+        println("$name | turnOff")
+        color cyan
+        forward griddisplay -m cellstate: cellstate(12,13,0)
+        delayVar BlinkTime
+    }
+    Goto flashOn
+}
