@@ -427,6 +427,27 @@
     </div>
   </div>
 
+  <!-- WEEK 12 -->
+  <div class="week">
+    <div class="week-dot"></div>
+    <div class="week-header">
+      <span class="week-num">Week 12</span>
+      <span class="week-date">07 MAG 2025</span>
+      <span class="tag tag-actor">QAK & Sonar</span>
+    </div>
+    <div class="card">
+      <p>Integrazione di un sonar nel sistema firefly: <strong>fireflysynch_sonar</strong>.</p>
+      <ul>
+        <li>Punto A: auto-sincronizzazione dopo 10 secondi tramite allineamento al secondo globale</li>
+        <li>Punto B: attore <code>sonar</code> che genera distanze random ogni 2 secondi e emette <code>obstacle(1/0)</code></li>
+        <li>Attore <code>sonarhandler</code> che traduce gli eventi del sonar in <code>synch</code>/<code>desynch</code> — separazione delle responsabilità</li>
+        <li>Le lucciole reagiscono a <code>synch</code> sincronizzandosi a 1000ms, a <code>desynch</code> tornando a frequenze random tra 400 e 900ms</li>
+        <li>Macchina a stati QAK con stati separati <code>turnOn</code>/<code>turnOff</code> per permettere la ricezione di eventi durante il lampeggio</li>
+        <li>Visualizzazione su grid HTML in tempo reale</li>
+      </ul>
+    </div>
+  </div>
+
 </div>
 </main>
 
