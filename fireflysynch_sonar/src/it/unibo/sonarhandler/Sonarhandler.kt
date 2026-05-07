@@ -29,32 +29,38 @@ class Sonarhandler ( name: String, scope: CoroutineScope, isconfined: Boolean=fa
 	override fun getBody() : (ActorBasicFsm.() -> Unit){
 		//val interruptedStateTransitions = mutableListOf<Transition>()
 		//IF actor.withobj !== null val actor.withobj.name� = actor.withobj.method�ENDIF
-		
-		        var SyncActive = false
-		        val DMIN = 50
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						CommUtils.outblack("$name | start")
+						CommUtils.outcyan("$name | ready")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t00",targetState="handleSonar",cond=whenEvent("sonar"))
+					 transition( edgeName="goto",targetState="waiting", cond=doswitch() )
 				}	 
-				state("handleSonar") { //this:State
+				state("waiting") { //this:State
 					action { //it:State
-						if( checkMsgContent( Term.createTerm("distance(D)"), Term.createTerm("distance(D)"), 
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition(edgeName="t00",targetState="handleObstacle",cond=whenEvent("obstacle"))
+				}	 
+				state("handleObstacle") { //this:State
+					action { //it:State
+						if( checkMsgContent( Term.createTerm("obstacle(DIST)"), Term.createTerm("obstacle(DIST)"), 
 						                        currentMsg.msgContent()) ) { //set msgArgList
-								 var Dist = payloadArg(0).toInt()  
-								if(  Dist < DMIN && !SyncActive  
-								 ){ SyncActive = true  
-								emit("syncCmd", "sync(1)" ) 
+								 var d = payloadArg(0).toInt()  
+								if(  d == 1  
+								 ){CommUtils.outred("$name | emitting synch")
+								emit("synch", "synch(1)" ) 
 								}
-								if(  Dist >= DMIN && SyncActive  
-								 ){ SyncActive = false  
-								emit("syncCmd", "sync(0)" ) 
+								if(  d == 0  
+								 ){CommUtils.outgreen("$name | emitting desynch")
+								emit("desynch", "desynch(1)" ) 
 								}
 						}
 						//genTimer( actor, state )
@@ -62,7 +68,7 @@ class Sonarhandler ( name: String, scope: CoroutineScope, isconfined: Boolean=fa
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition(edgeName="t01",targetState="handleSonar",cond=whenEvent("sonar"))
+					 transition( edgeName="goto",targetState="waiting", cond=doswitch() )
 				}	 
 			}
 		}

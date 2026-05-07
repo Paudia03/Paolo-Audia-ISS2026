@@ -26,11 +26,23 @@ with Diagram('fireflysynch_sonarArch', show=False, outformat='png', graph_attr=g
      sys = Custom('','./qakicons/system.png')
 ### see https://renenyffenegger.ch/notes/tools/Graphviz/attributes/label/HTML-like/index
      with Cluster('ctxfirefly', graph_attr=nodeattr):
+          sonar=Custom('sonar','./qakicons/symActorWithobjSmall.png')
+          sonarhandler=Custom('sonarhandler','./qakicons/symActorWithobjSmall.png')
           firefly1=Custom('firefly1','./qakicons/symActorWithobjSmall.png')
           firefly2=Custom('firefly2','./qakicons/symActorWithobjSmall.png')
           firefly3=Custom('firefly3','./qakicons/symActorWithobjSmall.png')
      with Cluster('ctxgrid', graph_attr=nodeattr):
           griddisplay=Custom('griddisplay(ext)','./qakicons/externalQActor.png')
+     sonar >> Edge( label='obstacle', **eventedgeattr, decorate='true', fontcolor='red') >> sys
+     sys >> Edge( label='obstacle', **evattr, decorate='true', fontcolor='darkgreen') >> sonarhandler
+     sonarhandler >> Edge( label='synch', **eventedgeattr, decorate='true', fontcolor='red') >> sys
+     sonarhandler >> Edge( label='desynch', **eventedgeattr, decorate='true', fontcolor='red') >> sys
+     sys >> Edge( label='synch', **evattr, decorate='true', fontcolor='darkgreen') >> firefly1
+     sys >> Edge( label='desynch', **evattr, decorate='true', fontcolor='darkgreen') >> firefly1
+     sys >> Edge( label='synch', **evattr, decorate='true', fontcolor='darkgreen') >> firefly2
+     sys >> Edge( label='desynch', **evattr, decorate='true', fontcolor='darkgreen') >> firefly2
+     sys >> Edge( label='synch', **evattr, decorate='true', fontcolor='darkgreen') >> firefly3
+     sys >> Edge( label='desynch', **evattr, decorate='true', fontcolor='darkgreen') >> firefly3
      firefly2 >> Edge(color='blue', style='solid',  decorate='true', label='<cellstate &nbsp; >',  fontcolor='blue') >> griddisplay
      firefly1 >> Edge(color='blue', style='solid',  decorate='true', label='<cellstate &nbsp; >',  fontcolor='blue') >> griddisplay
      firefly3 >> Edge(color='blue', style='solid',  decorate='true', label='<cellstate &nbsp; >',  fontcolor='blue') >> griddisplay

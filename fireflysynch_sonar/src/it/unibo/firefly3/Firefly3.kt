@@ -30,55 +30,96 @@ class Firefly3 ( name: String, scope: CoroutineScope, isconfined: Boolean=false,
 		//val interruptedStateTransitions = mutableListOf<Transition>()
 		//IF actor.withobj !== null val actor.withobj.name� = actor.withobj.method�ENDIF
 		
-		        var StartTime = 0L
-		        var BlinkTime = 400L 
-		        var SyncTime  = 1000L
-		        var IsSynced  = false
-		        var AlignTime = 0L
+		        var BlinkTime  = 400L
+		        var SyncTime   = 1000L
+		        var IsSynced   = false
+		        var StartTime  = 0L
+		        val ROW        = 12
+		        val COL        = 13
 		return { //this:ActionBasciFsm
 				state("s0") { //this:State
 					action { //it:State
-						CommUtils.outblack("$name | start")
 						 StartTime = System.currentTimeMillis()  
+						CommUtils.outmagenta("$name | start BlinkTime=$BlinkTime")
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition( edgeName="goto",targetState="flashOn", cond=doswitch() )
+					 transition( edgeName="goto",targetState="checkSynch", cond=doswitch() )
 				}	 
-				state("flashOn") { //this:State
+				state("checkSynch") { //this:State
 					action { //it:State
 						 var Elapsed = System.currentTimeMillis() - StartTime  
 						if(  Elapsed > 10000 && !IsSynced  
-						 ){ 
-						               IsSynced = true 
-						               AlignTime = SyncTime - (System.currentTimeMillis() % SyncTime)
-						CommUtils.outblack("$name | Sincronizzazione attivata! Allineamento fase in $AlignTime ms")
-						delay(AlignTime)
-						 BlinkTime = SyncTime  
+						 ){
+						               IsSynced  = true
+						               BlinkTime = SyncTime
+						CommUtils.outyellow("$name | AUTO SYNCH")
 						}
-						CommUtils.outmagenta("$name | turnOn (delay=$BlinkTime)")
-						forward("cellstate", "cellstate(12,13,1)" ,"griddisplay" ) 
-						delay(BlinkTime)
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition( edgeName="goto",targetState="flashOff", cond=doswitch() )
+					 transition( edgeName="goto",targetState="turnOn", cond=doswitch() )
 				}	 
-				state("flashOff") { //this:State
+				state("turnOn") { //this:State
 					action { //it:State
-						CommUtils.outcyan("$name | turnOff")
-						forward("cellstate", "cellstate(12,13,0)" ,"griddisplay" ) 
-						delay(BlinkTime)
+						forward("cellstate", "cellstate($ROW,$COL,1)" ,"griddisplay" ) 
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+				 	 		stateTimer = TimerActor("timer_turnOn", 
+				 	 					  scope, context!!, "local_tout_"+name+"_turnOn", BlinkTime )  //OCT2023
+					}	 	 
+					 transition(edgeName="t013",targetState="turnOff",cond=whenTimeout("local_tout_"+name+"_turnOn"))   
+					transition(edgeName="t014",targetState="doSynch",cond=whenEvent("synch"))
+					transition(edgeName="t015",targetState="doDesynch",cond=whenEvent("desynch"))
+				}	 
+				state("turnOff") { //this:State
+					action { //it:State
+						forward("cellstate", "cellstate($ROW,$COL,0)" ,"griddisplay" ) 
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+				 	 		stateTimer = TimerActor("timer_turnOff", 
+				 	 					  scope, context!!, "local_tout_"+name+"_turnOff", BlinkTime )  //OCT2023
+					}	 	 
+					 transition(edgeName="t016",targetState="checkSynch",cond=whenTimeout("local_tout_"+name+"_turnOff"))   
+					transition(edgeName="t017",targetState="doSynch",cond=whenEvent("synch"))
+					transition(edgeName="t018",targetState="doDesynch",cond=whenEvent("desynch"))
+				}	 
+				state("doSynch") { //this:State
+					action { //it:State
+						if( checkMsgContent( Term.createTerm("synch(X)"), Term.createTerm("synch(X)"), 
+						                        currentMsg.msgContent()) ) { //set msgArgList
+								
+								               IsSynced  = true
+								               BlinkTime = SyncTime
+								CommUtils.outred("$name | SYNCH by sonar")
+						}
 						//genTimer( actor, state )
 					}
 					//After Lenzi Aug2002
 					sysaction { //it:State
 					}	 	 
-					 transition( edgeName="goto",targetState="flashOn", cond=doswitch() )
+					 transition( edgeName="goto",targetState="turnOn", cond=doswitch() )
+				}	 
+				state("doDesynch") { //this:State
+					action { //it:State
+						
+						           IsSynced  = false
+						           BlinkTime = java.util.Random().nextLong(400L, 900L)
+						CommUtils.outgreen("$name | DESYNCH BlinkTime=$BlinkTime")
+						//genTimer( actor, state )
+					}
+					//After Lenzi Aug2002
+					sysaction { //it:State
+					}	 	 
+					 transition( edgeName="goto",targetState="turnOn", cond=doswitch() )
 				}	 
 			}
 		}

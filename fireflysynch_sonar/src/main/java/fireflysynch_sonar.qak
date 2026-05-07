@@ -1,146 +1,270 @@
 System fireflysynch_sonar
+
 Dispatch cellstate : cellstate(X,Y,COLOR)
+Event obstacle     : obstacle(DIST)
+Event synch        : synch(X)
+Event desynch      : desynch(X)
 
 Context ctxfirefly ip [ host="localhost" port=8040 ]
 Context ctxgrid    ip [ host="127.0.0.1" port=8050 ]
 
 ExternalQActor griddisplay context ctxgrid
 
-// LUCCIOLA 1
+// ─── SONAR ───────────────────────────────────────────────────
+QActor sonar context ctxfirefly {
+    [#
+        var DMIN        = 30.0
+        var dist        = 0.0
+        var nearObstacle = false
+    #]
+
+    State s0 initial {
+        println("$name | sonar started") color cyan
+    }
+    Goto sensing
+
+    State sensing {
+        [# dist = java.util.Random().nextDouble(10.0, 60.0) #]
+        println("$name | dist=$dist DMIN=$DMIN") color cyan
+
+        if [# dist < DMIN && !nearObstacle #] {
+            [# nearObstacle = true #]
+            println("$name | OBSTACLE DETECTED") color red
+            emit obstacle : obstacle(1)
+        }
+        if [# dist >= DMIN && nearObstacle #] {
+            [# nearObstacle = false #]
+            println("$name | OBSTACLE GONE") color green
+            emit obstacle : obstacle(0)
+        }
+        delay 2000
+    }
+    Goto sensing
+}
+
+// ─── SONAR HANDLER ───────────────────────────────────────────
+QActor sonarhandler context ctxfirefly {
+
+    State s0 initial {
+        println("$name | ready") color cyan
+    }
+    Goto waiting
+
+    State waiting {
+    }
+    Transition t0
+        whenEvent obstacle -> handleObstacle
+
+    State handleObstacle {
+        onMsg( obstacle : obstacle(DIST) ) {
+            [# var d = payloadArg(0).toInt() #]
+            if [# d == 1 #] {
+                println("$name | emitting synch") color red
+                emit synch : synch(1)
+            }
+            if [# d == 0 #] {
+                println("$name | emitting desynch") color green
+                emit desynch : desynch(1)
+            }
+        }
+    }
+    Goto waiting
+}
+
+// ─── LUCCIOLA 1 ──────────────────────────────────────────────
 QActor firefly1 context ctxfirefly {
     [#
-        var StartTime = 0L
-        var BlinkTime = 600L 
-        var SyncTime  = 1000L
-        var IsSynced  = false
-        var AlignTime = 0L
+        var BlinkTime  = 600L
+        var SyncTime   = 1000L
+        var IsSynced   = false
+        var StartTime  = 0L
+        val ROW        = 12
+        val COL        = 9
     #]
 
     State s0 initial {
-        println("$name | start")
         [# StartTime = System.currentTimeMillis() #]
+        println("$name | start BlinkTime=$BlinkTime") color magenta
     }
-    Goto flashOn
+    Goto checkSynch
 
-    State flashOn {
+    State checkSynch {
         [# var Elapsed = System.currentTimeMillis() - StartTime #]
-        
-        // Se passano 10 secondi e non siamo ancora sincronizzati...
         if [# Elapsed > 10000 && !IsSynced #] {
-            [# 
-               IsSynced = true 
-               // Calcoliamo i millisecondi esatti che mancano al prossimo multiplo di 1000
-               AlignTime = SyncTime - (System.currentTimeMillis() % SyncTime)
+            [#
+               IsSynced  = true
+               BlinkTime = SyncTime
             #]
-            println("$name | Sincronizzazione attivata! Allineamento fase in $AlignTime ms")
-            
-            // Aspettiamo questo intervallo per allinearci col "secondo esatto" globale
-            delayVar AlignTime
-            [# BlinkTime = SyncTime #]
+            println("$name | AUTO SYNCH") color yellow
         }
+    }
+    Goto turnOn
 
-        println("$name | turnOn (delay=$BlinkTime)")
-        color magenta
-        forward griddisplay -m cellstate: cellstate(12,9,1)
-        delayVar BlinkTime
+    State turnOn {
+        forward griddisplay -m cellstate : cellstate($ROW,$COL,1)
     }
-    Goto flashOff
-    
-    State flashOff {
-        println("$name | turnOff")
-        color cyan
-        forward griddisplay -m cellstate: cellstate(12,9,0)
-        delayVar BlinkTime
+    Transition t0
+        whenTimeVar BlinkTime -> turnOff
+        whenEvent synch       -> doSynch
+        whenEvent desynch     -> doDesynch
+
+    State turnOff {
+        forward griddisplay -m cellstate : cellstate($ROW,$COL,0)
     }
-    Goto flashOn
+    Transition t0
+        whenTimeVar BlinkTime -> checkSynch
+        whenEvent synch       -> doSynch
+        whenEvent desynch     -> doDesynch
+
+    State doSynch {
+        onMsg( synch : synch(X) ) {
+            [#
+               IsSynced  = true
+               BlinkTime = SyncTime
+            #]
+            println("$name | SYNCH by sonar") color red
+        }
+    }
+    Goto turnOn
+
+    State doDesynch {
+        [#
+           IsSynced  = false
+           BlinkTime = java.util.Random().nextLong(400L, 900L)
+        #]
+        println("$name | DESYNCH BlinkTime=$BlinkTime") color green
+    }
+    Goto turnOn
 }
 
-// LUCCIOLA 2
+// ─── LUCCIOLA 2 ──────────────────────────────────────────────
 QActor firefly2 context ctxfirefly {
     [#
-        var StartTime = 0L
-        var BlinkTime = 800L 
-        var SyncTime  = 1000L
-        var IsSynced  = false
-        var AlignTime = 0L
+        var BlinkTime  = 800L
+        var SyncTime   = 1000L
+        var IsSynced   = false
+        var StartTime  = 0L
+        val ROW        = 12
+        val COL        = 11
     #]
 
     State s0 initial {
-        println("$name | start")
         [# StartTime = System.currentTimeMillis() #]
+        println("$name | start BlinkTime=$BlinkTime") color magenta
     }
-    Goto flashOn
+    Goto checkSynch
 
-    State flashOn {
+    State checkSynch {
         [# var Elapsed = System.currentTimeMillis() - StartTime #]
-        
         if [# Elapsed > 10000 && !IsSynced #] {
-            [# 
-               IsSynced = true 
-               AlignTime = SyncTime - (System.currentTimeMillis() % SyncTime)
+            [#
+               IsSynced  = true
+               BlinkTime = SyncTime
             #]
-            println("$name | Sincronizzazione attivata! Allineamento fase in $AlignTime ms")
-            delayVar AlignTime
-            [# BlinkTime = SyncTime #]
+            println("$name | AUTO SYNCH") color yellow
         }
+    }
+    Goto turnOn
 
-        println("$name | turnOn (delay=$BlinkTime)")
-        color magenta
-        forward griddisplay -m cellstate: cellstate(12,11,1)
-        delayVar BlinkTime
+    State turnOn {
+        forward griddisplay -m cellstate : cellstate($ROW,$COL,1)
     }
-    Goto flashOff
-    
-    State flashOff {
-        println("$name | turnOff")
-        color cyan
-        forward griddisplay -m cellstate: cellstate(12,11,0)
-        delayVar BlinkTime
+    Transition t0
+        whenTimeVar BlinkTime -> turnOff
+        whenEvent synch       -> doSynch
+        whenEvent desynch     -> doDesynch
+
+    State turnOff {
+        forward griddisplay -m cellstate : cellstate($ROW,$COL,0)
     }
-    Goto flashOn
+    Transition t0
+        whenTimeVar BlinkTime -> checkSynch
+        whenEvent synch       -> doSynch
+        whenEvent desynch     -> doDesynch
+
+    State doSynch {
+        onMsg( synch : synch(X) ) {
+            [#
+               IsSynced  = true
+               BlinkTime = SyncTime
+            #]
+            println("$name | SYNCH by sonar") color red
+        }
+    }
+    Goto turnOn
+
+    State doDesynch {
+        [#
+           IsSynced  = false
+           BlinkTime = java.util.Random().nextLong(400L, 900L)
+        #]
+        println("$name | DESYNCH BlinkTime=$BlinkTime") color green
+    }
+    Goto turnOn
 }
 
-// LUCCIOLA 3
+// ─── LUCCIOLA 3 ──────────────────────────────────────────────
 QActor firefly3 context ctxfirefly {
     [#
-        var StartTime = 0L
-        var BlinkTime = 400L 
-        var SyncTime  = 1000L
-        var IsSynced  = false
-        var AlignTime = 0L
+        var BlinkTime  = 400L
+        var SyncTime   = 1000L
+        var IsSynced   = false
+        var StartTime  = 0L
+        val ROW        = 12
+        val COL        = 13
     #]
 
     State s0 initial {
-        println("$name | start")
         [# StartTime = System.currentTimeMillis() #]
+        println("$name | start BlinkTime=$BlinkTime") color magenta
     }
-    Goto flashOn
+    Goto checkSynch
 
-    State flashOn {
+    State checkSynch {
         [# var Elapsed = System.currentTimeMillis() - StartTime #]
-        
         if [# Elapsed > 10000 && !IsSynced #] {
-            [# 
-               IsSynced = true 
-               AlignTime = SyncTime - (System.currentTimeMillis() % SyncTime)
+            [#
+               IsSynced  = true
+               BlinkTime = SyncTime
             #]
-            println("$name | Sincronizzazione attivata! Allineamento fase in $AlignTime ms")
-            delayVar AlignTime
-            [# BlinkTime = SyncTime #]
+            println("$name | AUTO SYNCH") color yellow
         }
+    }
+    Goto turnOn
 
-        println("$name | turnOn (delay=$BlinkTime)")
-        color magenta
-        forward griddisplay -m cellstate: cellstate(12,13,1)
-        delayVar BlinkTime
+    State turnOn {
+        forward griddisplay -m cellstate : cellstate($ROW,$COL,1)
     }
-    Goto flashOff
-    
-    State flashOff {
-        println("$name | turnOff")
-        color cyan
-        forward griddisplay -m cellstate: cellstate(12,13,0)
-        delayVar BlinkTime
+    Transition t0
+        whenTimeVar BlinkTime -> turnOff
+        whenEvent synch       -> doSynch
+        whenEvent desynch     -> doDesynch
+
+    State turnOff {
+        forward griddisplay -m cellstate : cellstate($ROW,$COL,0)
     }
-    Goto flashOn
+    Transition t0
+        whenTimeVar BlinkTime -> checkSynch
+        whenEvent synch       -> doSynch
+        whenEvent desynch     -> doDesynch
+
+    State doSynch {
+        onMsg( synch : synch(X) ) {
+            [#
+               IsSynced  = true
+               BlinkTime = SyncTime
+            #]
+            println("$name | SYNCH by sonar") color red
+        }
+    }
+    Goto turnOn
+
+    State doDesynch {
+        [#
+           IsSynced  = false
+           BlinkTime = java.util.Random().nextLong(400L, 900L)
+        #]
+        println("$name | DESYNCH BlinkTime=$BlinkTime") color green
+    }
+    Goto turnOn
 }
